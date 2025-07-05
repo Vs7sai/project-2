@@ -1,0 +1,38 @@
+# Netlify configuration for RupeeRush
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Redirect all routes to index.html for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Set security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.pexels.com https://i.pravatar.cc https://via.placeholder.com; connect-src 'self' https://*.supabase.co https://*.clerk.accounts.dev https://checkout.razorpay.com; frame-src https://checkout.razorpay.com;"
+
+# Environment variable configuration
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+# Set cache headers for static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Set cache headers for HTML files
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
