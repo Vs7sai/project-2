@@ -178,6 +178,10 @@ export const generateSession = async (): Promise<boolean> => {
           access_token: zerodhaConfig.accessToken,
           expires_at: sessionExpiry.toISOString(),
           updated_at: new Date().toISOString()
+        }, {
+        }, {
+          onConflict: 'provider'
+        });
         });
     } catch (error) {
       console.log('Failed to store access token, but session is still active');
