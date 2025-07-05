@@ -180,6 +180,8 @@ export const generateSession = async (): Promise<boolean> => {
           updated_at: new Date().toISOString()
         }, {
           onConflict: 'provider'
+        }, {
+          onConflict: 'provider'
         });
     } catch (error) {
       console.log('Failed to store access token, but session is still active');
@@ -1059,6 +1061,8 @@ export const saveZerodhaCredentials = async (
         api_secret: apiSecret,
         user_id: userId,
         updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'provider'
       }, {
         onConflict: 'provider'
       });

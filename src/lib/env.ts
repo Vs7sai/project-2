@@ -225,6 +225,7 @@ export const createEnvironmentConfig = (): EnvironmentConfig => {
       nodeEnv: getEnvVar('VITE_NODE_ENV', 'development'),
       apiBaseUrl: getEnvVar('VITE_API_BASE_URL', 'https://api.rupeerush.com'),
       contestApiUrl: getEnvVar('VITE_CONTEST_API_URL', 'https://8e04-150-242-197-103.ngrok-free.app/api/hackthon/'),
+      contestApiUrl: getEnvVar('VITE_CONTEST_API_URL', 'https://8e04-150-242-197-103.ngrok-free.app/api/hackthon/'),
       useMockData: getBooleanEnvVar('VITE_USE_MOCK_DATA', true),
       enableWebSocket: getBooleanEnvVar('VITE_ENABLE_WEBSOCKET', true),
       enableNotifications: getBooleanEnvVar('VITE_ENABLE_NOTIFICATIONS', true),

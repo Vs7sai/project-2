@@ -16,6 +16,7 @@ import { isWeekend, getMarketStatus, formatTimeUntilMarketOpen } from '../lib/ma
 import { calculatePrizeDistribution, formatPrizeDistribution } from '../lib/prizeDistribution';
 import INRWatermark from '../components/ui/INRWatermark';
 import ContestApiStatus from '../components/ui/ContestApiStatus';
+import ContestApiStatus from '../components/ui/ContestApiStatus';
 import FloatingElements from '../components/ui/FloatingElements';
 import { getEnvironmentStatus } from '../lib/env';
 
@@ -55,9 +56,6 @@ const ContestLobbyPage: React.FC = () => {
   useEffect(() => {
     // Fetch contests from API
     fetchContestsFromAPI(dispatch);
-  }, [dispatch, marketStatus]);
-
-  const filteredContests = contests.filter(contest => {
     // Filter by tab
     if (activeTab === 'stock' && contest.assetType !== 'stock') return false;
     if (activeTab === 'crypto' && contest.assetType !== 'crypto') return false;
@@ -227,6 +225,14 @@ const ContestLobbyPage: React.FC = () => {
                 : 'Sectoral & Mixed contests • Entry fee ₹100 • Get ₹10,00,000 virtual cash'
               }
             </p>
+            
+            {/* API Status Indicator */}
+            <div className="flex justify-center mb-4">
+              <ContestApiStatus 
+                apiUrl={env.app.contestApiUrl} 
+                className="px-3 py-1 rounded-lg bg-white/10 backdrop-blur-sm"
+              />
+            </div>
             
             {/* API Status Indicator */}
             <div className="flex justify-center mb-4">

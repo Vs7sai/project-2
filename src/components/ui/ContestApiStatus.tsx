@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { Wifi, WifiOff, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
+import { RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface ContestApiStatusProps {
   apiUrl: string;
@@ -19,12 +19,15 @@ const ContestApiStatus: React.FC<ContestApiStatusProps> = ({
   const checkApiStatus = async () => {
     setIsRefreshing(true);
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
       const response = await fetch(apiUrl, { 
-        method: 'HEAD',
-        // Using a timeout to avoid long waits if the API is down
-        signal: AbortSignal.timeout(5000)
+        method: 'GET',
+        signal: controller.signal
       });
       
+      clearTimeout(timeoutId);
       setStatus(response.ok ? 'online' : 'offline');
     } catch (error) {
       console.error('Error checking API status:', error);
