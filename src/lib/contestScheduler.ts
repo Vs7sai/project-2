@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 import { getMarketStatus } from './marketHours';
 import { fetchMarketData } from './marketDataService';
+import { fetchContestsFromAPI, postContestResults } from './api';
 import { AppDispatch } from '../store';
 
 // Contest status types
@@ -112,6 +113,19 @@ export const calculateContestResults = async (dispatch: AppDispatch) => {
     // In a real implementation, this would calculate results and update the database
     // For now, we'll just log the action
     console.log('Contest results calculated at', new Date().toLocaleTimeString());
+    
+    // Get contest results from the store and post to API
+    // This is a simplified example - in a real implementation, you would get the actual results
+    const mockResults = {
+      contestId: 'daily-stock-challenge',
+      winners: [
+        { userId: 'user-1', rank: 1, profit: 25750.35, profitPercentage: 25.75 },
+        { userId: 'user-2', rank: 2, profit: 18932.45, profitPercentage: 18.93 }
+      ]
+    };
+    
+    // Post results to API
+    await postContestResults(mockResults.contestId, mockResults);
   } catch (error) {
     console.error('Error calculating contest results:', error);
   }
@@ -125,6 +139,9 @@ export const openNewContests = async (dispatch: AppDispatch) => {
     // In a real implementation, this would create new contests in the database
     // For now, we'll just log the action
     console.log('New contests opened at', new Date().toLocaleTimeString());
+    
+    // Fetch updated contests from API
+    await fetchContestsFromAPI(dispatch);
   } catch (error) {
     console.error('Error opening new contests:', error);
   }

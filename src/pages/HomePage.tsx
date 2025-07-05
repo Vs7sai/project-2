@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { fetchMarketDataStart, fetchMarketDataSuccess, setSelectedType, simulatePriceUpdates } from '../store/slices/marketSlice';
+import { fetchContestsFromAPI } from '../lib/api';
 import { mockMarketData } from '../lib/mockData';
 import { API_CONFIG, getSystemStatus, getSetupInstructions, validateFinnhubConfig } from '../lib/config';
 import { isWeekend, getMarketStatus, formatTimeUntilMarketOpen } from '../lib/marketHours';
@@ -43,6 +44,9 @@ const HomePage: React.FC = () => {
     
     // Fetch market data
     fetchMarketData(dispatch);
+
+    // Fetch contests from API
+    fetchContestsFromAPI(dispatch);
 
     // Update system status
     setSystemStatus(getSystemStatus());

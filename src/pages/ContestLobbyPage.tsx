@@ -5,16 +5,17 @@ import { useUser } from '@clerk/clerk-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { fetchContestsStart, fetchContestsSuccess, joinContest, updateCurrentTime } from '../store/slices/contestSlice';
+import { joinContest, updateCurrentTime } from '../store/slices/contestSlice';
 import { addTransaction } from '../store/slices/walletSlice';
 import { createPortfolio } from '../store/slices/portfolioSlice';
-import { getContestData } from '../lib/mockData';
+import { fetchContestsFromAPI } from '../lib/api';
 import { format } from 'date-fns';
 import PaymentModal from '../components/ui/PaymentModal';
 import { useNavigate } from 'react-router-dom';
 import { isWeekend, getMarketStatus, formatTimeUntilMarketOpen } from '../lib/marketHours';
 import { calculatePrizeDistribution, formatPrizeDistribution } from '../lib/prizeDistribution';
 import INRWatermark from '../components/ui/INRWatermark';
+import ContestApiStatus from '../components/ui/ContestApiStatus';
 import FloatingElements from '../components/ui/FloatingElements';
 import { getEnvironmentStatus } from '../lib/env';
 
@@ -52,11 +53,8 @@ const ContestLobbyPage: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchContestsStart());
-    setTimeout(() => {
-      const contestData = getContestData();
-      dispatch(fetchContestsSuccess(contestData));
-    }, 1000);
+    // Fetch contests from API
+    fetchContestsFromAPI(dispatch);
   }, [dispatch, marketStatus]);
 
   const filteredContests = contests.filter(contest => {
@@ -229,6 +227,14 @@ const ContestLobbyPage: React.FC = () => {
                 : 'Sectoral & Mixed contests • Entry fee ₹100 • Get ₹10,00,000 virtual cash'
               }
             </p>
+            
+            {/* API Status Indicator */}
+            <div className="flex justify-center mb-4">
+              <ContestApiStatus 
+                apiUrl="https://8e04-150-242-197-103.ngrok-free.app/api/hackthon/" 
+                className="px-3 py-1 rounded-lg bg-white/10 backdrop-blur-sm"
+              />
+            </div>
             
             {/* Market Status Banner */}
             <div className={`p-4 rounded-lg mb-6 ${
